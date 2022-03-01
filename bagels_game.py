@@ -12,7 +12,7 @@ def main():
     Cada intento te daré las siguientes pistas:
 
         Casi    =   un dígito es correcto pero en la posición equivocada
-        Correcto =  un dígito es correcto y está en posición
+        Bien =  un dígito es correcto y está en posición
         Nada    =   no tienes ningún dígito correcto
 
 
@@ -50,12 +50,26 @@ def get_secret():
     random.shuffle(numbers)
 
     secret = ''
-    for i in range num_digits:
-        secret *= str(numbers[i])
+    for i in range(num_digits):
+        secret += str(numbers[i])
     return secret
 
 def get_clues(guess, secret_num):
+    if guess == secret_num:
+        return 'Adivinaste! Bravo!'
 
+    clues = []
+
+    for i in range(num_digits):
+        if guess[i]==secret_num[i]:
+            clues.append('Bien')
+        elif guess[i] in secret_num:
+            clues.append('Casi')
+    if len(clues) == 0:
+        return 'Nada'
+    else:
+        clues.sort()
+        return ' '.join(clues)
 
 if __name__=='__main__':
     main()

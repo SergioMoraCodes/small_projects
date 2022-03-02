@@ -20,7 +20,7 @@ def main():
 
     while True:
         secret_num = get_secret()
-        print('ya pensé un número, tienes {} intentos'.format(max_guesses))
+        print('ya pensé un número de {} dígitos, tienes {} intentos'.format(num_digits,max_guesses))
         guess_number = 1
 
         while guess_number <=max_guesses:

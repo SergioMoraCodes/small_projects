@@ -1,9 +1,9 @@
-import w
+import wikipedia as wiki
 import tkinter as tk
 
-def search():
+def search(event):
     content = search_box.get()
-    result = wiki.summary(content)
+    result = wiki.summary(content, sentences=1)
     T.delete("1.0",tk.END)
     T.insert(tk.END, result)
 

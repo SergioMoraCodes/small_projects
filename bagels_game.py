@@ -1,7 +1,7 @@
 import random
 
-num_digits = 3
-max_guesses = 10
+num_digits = 4
+max_guesses = 15
 
 def main():
     print('''

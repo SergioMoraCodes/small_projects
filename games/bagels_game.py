@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import random
 
 num_digits = 4
@@ -75,4 +73,3 @@ def get_clues(guess, secret_num):
 
 if __name__=='__main__':
     main()
->>>>>>> digits

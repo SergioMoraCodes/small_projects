@@ -15,6 +15,8 @@ class Level:
         self.create_map()
 
     def create_map(self):
+        #recorrer el mapa para establecer que es 'x' o 'p'
+        #definir un index, multiplicando su posicion por el tilesize que es 64px
         for row_index, row in enumerate(WORLD_MAP):
             for col_index, col in enumerate(row):
                 x = col_index * TILESIZE

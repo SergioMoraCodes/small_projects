@@ -5,6 +5,8 @@ from player import Player
 from debug import debug
 from support import *
 from random import choice
+from weapon import Weapon
+
 class Level:
     def __init__(self):
         #get the display surface
@@ -13,6 +15,9 @@ class Level:
         #sprite group setup
         self.visible_sprites = Ysortcameragroup()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        # attack sprites
+        self.current_attack = None
 
         #sprite setup
         self.create_map()
@@ -37,7 +42,7 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundaries':
-                            Tile((x,y),self.obstacle_sprites,'invisible')
+                            Tile((x,y),[self.obstacle_sprites],'invisible')
                         if style == 'grass':
                             rand_grass = choice(graphics['grass'])
                             Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'visible',rand_grass)
@@ -45,13 +50,21 @@ class Level:
                             obj = graphics['objects'][int(col)]
                             Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'objects',obj)
 
-        self.player = Player((2000,1430),[self.visible_sprites],self.obstacle_sprites)
+                #parameters = pos,        groups,               obstacle_sprites           pass the function, not call it
+        self.player = Player((2000,1430),[self.visible_sprites],self.obstacle_sprites,self.create_attack,self.destroy_attack) #creates the player
+
+    def create_attack(self):
+        self.current_attack = Weapon(self.player,self.visible_sprites)
+
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
         debug(self.player.status)
-
 class Ysortcameragroup(pygame.sprite.Group):
     def __init__(self):
 

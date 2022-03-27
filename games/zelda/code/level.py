@@ -6,21 +6,25 @@ from debug import debug
 from support import *
 from random import choice
 from weapon import Weapon
+from ui import UI
 
 class Level:
     def __init__(self):
-        #get the display surface
+        # get the display surface
         self.display_surface = pygame.display.get_surface()
 
-        #sprite group setup
+        # sprite group setup
         self.visible_sprites = Ysortcameragroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
         # attack sprites
         self.current_attack = None
 
-        #sprite setup
+        # sprite setup
         self.create_map()
+
+        # user interface
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -33,8 +37,6 @@ class Level:
             'objects': import_folder('../graphics/objects')
         }
 
-        #recorrer el mapa para establecer que es 'x' o 'p'
-        #definir un index, multiplicando su posicion por el tilesize que es 64px
         for style,layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
@@ -50,8 +52,8 @@ class Level:
                             obj = graphics['objects'][int(col)]
                             Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'objects',obj)
 
-                #parameters = pos,        groups,               obstacle_sprites           pass the function, not call it
-        self.player = Player((2000,1430),[self.visible_sprites],self.obstacle_sprites,self.create_attack,self.destroy_attack) #creates the player
+        self.player = Player((2000,1430), [self.visible_sprites],self.obstacle_sprites,
+                             self.create_attack,self.destroy_attack) #creates the player
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,self.visible_sprites)
@@ -64,7 +66,7 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.status)
+        self.ui.display(self.player)
 class Ysortcameragroup(pygame.sprite.Group):
     def __init__(self):
 

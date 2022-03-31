@@ -48,7 +48,7 @@ if __name__=='__main__':
     game.run()                                 # run method of game class
 ```
 
-![](/images/window.png 'empty window game')
+![](/images/window.png)
 
 ### 2. Level Setup:
 

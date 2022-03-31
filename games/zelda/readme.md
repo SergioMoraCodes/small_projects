@@ -72,7 +72,7 @@ class Level():
 
 - creating the map `def create_map():` and drawing the basic elements:
 
-![](/images/rocks.png 'basic elements displayed')
+![](\images\rocks.png 'basic elements displayed')
 
 
 

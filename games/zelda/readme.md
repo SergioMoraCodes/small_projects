@@ -101,7 +101,7 @@ class Level():
 
 ![](./images/map.png 'map')
 ![](./images/player.png 'player')
-![]./images/objects.png 'obstacles')
+![](./images/objects.png 'obstacles')
 ![](./images/object1.png 'obstacles')
 ![](./images/grass.png 'grass')
 
@@ -125,7 +125,7 @@ class Level():
 
 - import weapons assets and display them whenever the player attacks:
 
-    : ![](./images/idle.png)    ![](./images/attacking.png) 
+    ![](./images/idle.png)    ![](./images/attacking.png) 
     ![](./images/down.png)    ![](./images/downattack.png)
 
 - Create a Health bar and a Mana bar status:

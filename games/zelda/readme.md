@@ -72,7 +72,7 @@ class Level():
 
 - creating the map `def create_map():` and drawing the basic elements:
 
-![](\images\rocks.png 'basic elements displayed')
+![](.\images\rocks.png 'basic elements displayed')
 
 
 
@@ -99,11 +99,11 @@ class Level():
 
 - Import all the assets:
 
-![](/images/map.png 'map')
-![](/images/player.png 'player')
-![](/images/objects.png 'obstacles')
-![](/images/object1.png 'obstacles')
-![](/images/grass.png 'grass')
+![](./images/map.png 'map')
+![](./images/player.png 'player')
+![]./images/objects.png 'obstacles')
+![](./images/object1.png 'obstacles')
+![](./images/grass.png 'grass')
 
 
 ### 6. Player animation:
@@ -125,12 +125,12 @@ class Level():
 
 - import weapons assets and display them whenever the player attacks:
 
-    : ![](/images/idle.png)    ![](/images/attacking.png) 
-    ![](/images/down.png)    ![](/images/downattack.png)
+    : ![](./images/idle.png)    ![](./images/attacking.png) 
+    ![](./images/down.png)    ![](./images/downattack.png)
 
 - Create a Health bar and a Mana bar status:
 - Create weapon and magic box:
- ![](/images/ui.png)
+ ![](./images/ui.png)
 
 ### 8. Enemies and interactions:
 

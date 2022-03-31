@@ -10,7 +10,7 @@ from ui import UI
 
 class Level:
     def __init__(self):
-        # get the display surface
+        # get the display surface already created in main
         self.display_surface = pygame.display.get_surface()
 
         # sprite group setup
@@ -66,10 +66,10 @@ class Level:
             self.current_attack.kill()
         self.current_attack = None
 
-    def run(self):
-        self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.ui.display(self.player)
+    def run(self): # update and draw the game
+        self.visible_sprites.custom_draw(self.player) # draw visible sprites
+        self.visible_sprites.update()                 # update the drawing
+        self.ui.display(self.player)                  # draws the player stats
 class Ysortcameragroup(pygame.sprite.Group):
     def __init__(self):
 
@@ -88,14 +88,16 @@ class Ysortcameragroup(pygame.sprite.Group):
 
     def custom_draw(self,player):
 
-        #getting the offset
+        #getting the offset to set the player in the center
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
 
-        #drawing the floor
-        floor_offset_pos = self.floor_rect.topleft - self.offset
+        #drawing the floor first and then all the visible sprites
+        floor_offset_pos = self.floor_rect.topleft - self.offset #setting the map offset
         self.display_surface.blit(self.floor_surf,floor_offset_pos)
+
+        #sorting the visible sprites by their position in the Y axis
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image,offset_pos)

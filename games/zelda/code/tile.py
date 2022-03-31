@@ -3,7 +3,7 @@ from settings import *
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self,pos,groups,sprite_type,surface = pygame.Surface((TILESIZE,TILESIZE))):
-        super().__init__(groups) #iniciando la clase padre
+        super().__init__(groups) # initiates the Sprite class and indicate in which group the tile is
         self.sprite_type = sprite_type
         self.image = surface
         if sprite_type == 'objects':

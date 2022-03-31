@@ -3,10 +3,10 @@ from settings import *
 from support import import_folder
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
-        super().__init__(groups) #iniciando la clase padre
+        super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
-        self.rect = self.image.get_rect(topleft= pos)
-        self.hitbox = self.rect.inflate(0,-26)
+        self.rect = self.image.get_rect(topleft= pos) # gets rect to draw image
+        self.hitbox = self.rect.inflate(0,-26)  # offset rect to make collisions
 
         # graphic setup
         self.import_player_assets()
@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 0.15
 
         # movement
-        self.direction = pygame.math.Vector2()
+        self.direction = pygame.math.Vector2() # gives a vector [x,y] that determines player position
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = 0
@@ -130,7 +130,7 @@ class Player(pygame.sprite.Sprite):
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
-            self.direction =self.direction.normalize()
+            self.direction =self.direction.normalize() # direction will always be 1
         self.hitbox.x += self.direction.x * speed #changes x coordinate of the surface
         self.collision('horizontal')
         self.hitbox.y += self.direction.y * speed
@@ -142,7 +142,7 @@ class Player(pygame.sprite.Sprite):
             for sprite in self.obstacle_sprites: #checking sprites for collisions
                 if sprite.hitbox.colliderect(self.hitbox): #if there is some collision:
                     if self.direction.x > 0: #moving right
-                        self.hitbox.right = sprite.hitbox.left
+                        self.hitbox.right = sprite.hitbox.left #right side of player can't pass left side of obstacle
                     if self.direction.x <0: #moving left
                         self.hitbox.left = sprite.hitbox.right
         if direction == 'vertical':

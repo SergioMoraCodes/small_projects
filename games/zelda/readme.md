@@ -134,6 +134,14 @@ class Level():
 
 ### 8. Enemies and interactions:
 
+- Creation and animation of the enemies
+- Very similar actions of the player
+    - created a new class from which the player and the enemies are going inherit methods
+    - import graphics and animate just the same
+- Get the relative distance and direction from the player to give a condition to act (attack or move)
+
+![](./images/raccon.png)
+
 ### 9. Spells and particles:
 
 ### 10. Menu, sound and final fixes:

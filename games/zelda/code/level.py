@@ -12,14 +12,14 @@ from enemy import Enemy
 class Level:
     def __init__(self):
         # get the display surface already created in main
-        self.display_surface = pygame.display.get_surface()
+        self.display_surface  = pygame.display.get_surface()
 
         # sprite group setup
-        self.visible_sprites = Ysortcameragroup()
+        self.visible_sprites  = Ysortcameragroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
         # attack sprites
-        self.current_attack = None
+        self.current_attack   = None
 
         # sprite setup
         self.create_map()
@@ -35,7 +35,7 @@ class Level:
             'entities'  :import_csv_file('../map/map_Entities.csv')
         }
         graphics = {
-            'grass' : import_folder('../graphics/Grass'),
+            'grass'  : import_folder('../graphics/Grass'  ),
             'objects': import_folder('../graphics/objects')
         }
 
@@ -56,14 +56,13 @@ class Level:
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player((x,y), [self.visible_sprites],self.obstacle_sprites,
-                                             self.create_attack,self.destroy_attack,self.create_magic) 
+                                             self.create_attack,self.destroy_attack,self.create_magic)
                             else:
-                                if col == '390'  : monster_name = 'bamboo'
+                                if   col == '390': monster_name = 'bamboo'
                                 elif col == '391': monster_name = 'spirit'
                                 elif col == '392': monster_name = 'raccoon'
                                 else             : monster_name = 'squid'
                                 Enemy(monster_name,(x,y),[self.visible_sprites],self.obstacle_sprites)
-        
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,self.visible_sprites)
@@ -87,8 +86,8 @@ class Ysortcameragroup(pygame.sprite.Group):
         # general setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
-        self.half_width = self.display_surface.get_size()[0] // 2
-        self.half_height = self.display_surface.get_size()[1] // 2
+        self.half_width      = self.display_surface.get_size()[0] // 2
+        self.half_height     = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
         #creating the floor
@@ -97,7 +96,7 @@ class Ysortcameragroup(pygame.sprite.Group):
 
     def custom_draw(self,player):
 
-        #getting the offset to set the player in the center
+        # getting the offset to set the player in the center
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 

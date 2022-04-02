@@ -15,13 +15,13 @@ class UI():
         # converting weapons dictionary
         self.weapon_graphics = []
         for weapon in weapon_data.values():
-            path = weapon['graphic']
+            path   = weapon['graphic']
             weapon = pygame.image.load(path).convert_alpha()
             self.weapon_graphics.append(weapon)
 
         self.magic_graphics = []
         for magic in magic_data.values():
-            path = magic['graphic']
+            path  = magic['graphic']
             magic = pygame.image.load(path).convert_alpha()
             self.magic_graphics.append(magic)
 
@@ -58,13 +58,13 @@ class UI():
     def weapon_overlay(self,weapon_index,switch):
         bg_rect = self.selection_box(10,600,switch)
         weapon_surface = self.weapon_graphics[weapon_index]
-        weapon_rect = weapon_surface.get_rect(center= bg_rect.center)
+        weapon_rect    = weapon_surface.get_rect(center= bg_rect.center)
         self.display_surface.blit(weapon_surface, weapon_rect)
 
     def magic_overlay(self, magic_index, switch):
         bg_rect = self.selection_box(80,610,switch)
         magic_surface = self.magic_graphics[magic_index]
-        magic_rect = magic_surface.get_rect(center = bg_rect.center)
+        magic_rect    = magic_surface.get_rect(center = bg_rect.center)
         self.display_surface.blit(magic_surface, magic_rect)
 
     def display(self, player):
@@ -74,4 +74,4 @@ class UI():
         self.show_exp(player.exp)
 
         self.weapon_overlay(player.weapon_index,not player.attack_switch)
-        self.magic_overlay(player.magic_index,not player.magic_switch)
+        self.magic_overlay (player.magic_index ,not player.magic_switch )

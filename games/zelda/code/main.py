@@ -4,8 +4,8 @@ from level import Level
 class Game:
     def __init__(self):
 
-        #! Basic setup to use Pygame
-        pygame.init() #initiating pygame
+        # Basic setup to use Pygame
+        pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # creating the display surface (window)
         pygame.display.set_caption('Zelda')    #  title of the window
         self.clock = pygame.time.Clock()       # creating a clock
@@ -21,8 +21,6 @@ class Game:
             self.level.run()
             pygame.display.update()   # updating the screen
             self.clock.tick(FPS)      # controlling the frame rate
-
-
 
 if __name__=='__main__':
     game = Game() # creating instance of the Game class

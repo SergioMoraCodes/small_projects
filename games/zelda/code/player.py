@@ -15,27 +15,27 @@ class Player(Entity):
         self.status = 'down'
 
         # movement
-        self.attacking = False
-        self.attack_cooldown = 400
-        self.attack_time = 0
-        self.casting = False
-        self.cast_cooldown = 400
-        self.cast_time = 0
+        self.attacking        = False
+        self.attack_cooldown  = 400
+        self.attack_time      = 0
+        self.casting          = False
+        self.cast_cooldown    = 400
+        self.cast_time        = 0
         self.obstacle_sprites = obstacle_sprites
 
         # stats
-        self.stats = {'health':100, 'energy':60, 'attack':10, 'magic':4, 'speed':5}
-        self.health = self.stats['health'] *0.4 #we can have a difference between the maximun and current amount
-        self.energy = self.stats['energy']
-        self.exp = 0
-        self.speed = self.stats['speed']
+        self.stats  = {'health':100, 'energy':60, 'attack':10, 'magic':4, 'speed':5} # max
+        self.health = self.stats['health'] # current
+        self.energy = self.stats['energy'] # we can have a difference between current and max
+        self.speed  = self.stats['speed' ]
+        self.exp    = 0
 
         # weapon
-        self.create_attack   = create_attack #? store the function create attack
+        self.create_attack   = create_attack   #? stores the function create attack
         self.destroy_attack  = destroy_attack
         self.weapon_index    = 1
         self.weapon          = list(weapon_data.keys())[self.weapon_index]
-        self.attack_switch      = True
+        self.attack_switch   = True
         self.switch_cooldown = 200
         self.switch_time     = 0
 
@@ -48,12 +48,15 @@ class Player(Entity):
         self.magic_switch   = True
 
     def import_player_assets(self):
-        folder_path = '../graphics/player/'
-        self.animations = {'up':[], 'down':[], 'left':[], 'right':[],
+        folder_path     = '../graphics/player/'
+
+        self.animations = {
+                   'up':[],        'down':[],        'left':[],        'right':[],
             'up_attack':[], 'down_attack':[], 'left_attack':[], 'right_attack':[],
-            'up_idle':[], 'down_idle':[], 'left_idle':[], 'right_idle':[]}
+            'up_idle'  :[], 'down_idle'  :[], 'left_idle'  :[],   'right_idle':[]}
+
         for animation in self.animations.keys():
-            full_path = folder_path+animation
+            full_path = folder_path + animation
             self.animations[animation] = import_folder(full_path) #import all the surfaces into the dict
 
     def input(self):
@@ -61,7 +64,7 @@ class Player(Entity):
 
         if not self.attacking:
             #movement input
-            if keys[pygame.K_UP]:
+            if   keys[pygame.K_UP]:
                 self.direction.y = -1
                 self.status = 'up'
             elif keys[pygame.K_DOWN]:
@@ -70,7 +73,7 @@ class Player(Entity):
             else:
                 self.direction.y = 0
 
-            if keys[pygame.K_LEFT]:
+            if   keys[pygame.K_LEFT]:
                 self.direction.x = -1
                 self.status = 'left'
             elif keys[pygame.K_RIGHT]:
@@ -86,8 +89,8 @@ class Player(Entity):
                 self.create_attack() #calls create_attack method and creates Weapon() object
             #magic input
             if keys[pygame.K_LCTRL]:
-                self.attacking = True
-                self.attack_time = pygame.time.get_ticks() #gets time once
+                self.attacking      = True
+                self.attack_time    = pygame.time.get_ticks() #gets time once
                 self.magic          = list(magic_data.keys())[self.magic_index]
                 self.magic_strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
                 self.magic_cost     = list(magic_data.values())[self.magic_index]['cost']
@@ -95,16 +98,18 @@ class Player(Entity):
 
             if keys[pygame.K_q] and self.attack_switch:
                 self.attack_switch = False
-                self.switch_time = pygame.time.get_ticks()
+                self.switch_time   = pygame.time.get_ticks()
                 self.weapon_index += 1
+
                 if self.weapon_index >= len(weapon_data.keys()):
                     self.weapon_index = 0
                 self.weapon = list(weapon_data.keys())[self.weapon_index]
 
             if keys[pygame.K_e] and self.magic_switch:
                 self.magic_switch = False
-                self.switch_time = pygame.time.get_ticks()
+                self.switch_time  = pygame.time.get_ticks()
                 self.magic_index += 1
+
                 if self.magic_index >= len(magic_data.keys()):
                     self.magic_index = 0
                 self.magic = list(magic_data.keys())[self.magic_index]
@@ -121,7 +126,7 @@ class Player(Entity):
             self.direction.x = 0
             self.direction.y = 0
             if not 'attack' in self.status:
-                if 'idle' in self.status:
+                if 'idle'   in self.status:
                     self.status = self.status.replace('idle','attack')#overwrite idle
                 else:
                     self.status = self.status + '_attack'

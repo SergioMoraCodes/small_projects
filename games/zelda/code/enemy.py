@@ -12,10 +12,10 @@ class Enemy(Entity):
         # graphics
         self.import_graphics(monster_name)
         self.status = 'idle'
-        self.image = self.animations[self.status][self.frame_index]
+        self.image  = self.animations[self.status][self.frame_index]
 
         # movement
-        self.rect  = self.image.get_rect(topleft=pos)
+        self.rect   = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,-10)
         self.obstacle_sprites = obstacle_sprites
 
@@ -32,10 +32,9 @@ class Enemy(Entity):
         self.notice_radius = monster_info['notice_radius']
 
         # player interaction
-        self.can_attack = True
+        self.can_attack      = True
         self.attack_cooldown = 400
-        self.attack_time = 0
-
+        self.attack_time     = 0
 
     def import_graphics(self, name):
         self.animations = {'idle':[], 'move':[], 'attack':[]} # stores the surfaces in those folders
@@ -44,9 +43,10 @@ class Enemy(Entity):
             self.animations[animation] = import_folder(main_path + animation) # returns all the images as surfaces
 
     def get_player_dist(self, player):
-        enemy_vector = pygame.math.Vector2(self.rect.center)
+        enemy_vector  = pygame.math.Vector2(self.rect.center)
         player_vector = pygame.math.Vector2(player.rect.center)
         distance = (player_vector - enemy_vector).magnitude()
+
         if distance > 0:
             direction = (player_vector - enemy_vector).normalize()
         else:
@@ -78,7 +78,7 @@ class Enemy(Entity):
 
     def update(self):
         self.move(self.speed)
-        self.animate()
+        # self.animate()
         self.cooldowns()
 
     def animate(self):

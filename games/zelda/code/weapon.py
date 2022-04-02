@@ -12,7 +12,7 @@ class Weapon(pygame.sprite.Sprite):
         self.image = pygame.image.load(full_path).convert_alpha()
 
         #placement                                                       adding to the (x,y) coordinates
-        if direction == 'right':
+        if   direction == 'right':
             self.rect = self.image.get_rect(midleft = player.rect.midright + pygame.math.Vector2(0,16))#correcting weapon position the hand is below the center
         elif direction == 'left':
             self.rect = self.image.get_rect(midright = player.rect.midleft + pygame.math.Vector2(0,16))

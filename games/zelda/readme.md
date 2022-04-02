@@ -144,4 +144,7 @@ class Level():
 
 ### 9. Spells and particles:
 
+- the particles are just another groups of sprites that is animated and then destroyed once the animation finish
+- because every animation are several images, and there're a lot a particle effects, it can slow down the game if we import images when the animation is needed, so the graphics import should be done at the moment that the game starts.
+
 ### 10. Menu, sound and final fixes:

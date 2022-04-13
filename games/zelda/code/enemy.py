@@ -78,7 +78,7 @@ class Enemy(Entity):
 
     def update(self):
         self.move(self.speed)
-        # self.animate()
+        self.animate()
         self.cooldowns()
 
     def animate(self):

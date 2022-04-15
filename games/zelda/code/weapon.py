@@ -5,6 +5,7 @@ class Weapon(pygame.sprite.Sprite):
     def __init__(self,player,groups):
         super().__init__(groups) #al iniciar la clase padre debo poner a que grupos pertenece
 
+        self.sprite_type = 'weapon'
         direction = player.status.split('_')[0] #player status is a string, when splitted i get a two element list
 
         #graphic

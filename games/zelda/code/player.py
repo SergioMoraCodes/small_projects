@@ -134,7 +134,7 @@ class Player(Entity):
     def cooldowns(self):
         current_time = pygame.time.get_ticks() #* continuosly measure what time it's
         if self.attacking:
-            if current_time - self.attack_time >= self.attack_cooldown:
+            if current_time - self.attack_time >= self.attack_cooldown + weapon_data[self.weapon]['cooldown']:
                 self.attacking = False
                 if 'attack' in self.status:
                         self.status = self.status.replace('_attack','')
@@ -152,6 +152,10 @@ class Player(Entity):
         if not self.magic_switch:
             if current_time - self.switch_time >= self.switch_cooldown:
                 self.magic_switch = True
+
+    def get_weapon_damage(self):
+        # base damage + weapon damage
+        return self.stats['attack']+ weapon_data[self.weapon]['damage']
 
     def animate(self):
         animation = self.animations[self.status]

@@ -36,6 +36,11 @@ class Enemy(Entity):
         self.attack_cooldown = 400
         self.attack_time     = 0
 
+        # damage timer
+        self.vulnerable    = True
+        self.invincibility = 400
+        self.hit_time      = 0
+
     def import_graphics(self, name):
         self.animations = {'idle':[], 'move':[], 'attack':[]} # stores the surfaces in those folders
         main_path = f'../graphics/monsters/{name}/'
@@ -101,7 +106,23 @@ class Enemy(Entity):
                 if 'attack' in self.status:
                         self.status = self.status.replace('_attack','')
                         self.destroy_attack()
+        if not self.vulnerable:
+            if current_time - self.hit_time >= self.invincibility:
+                self.vulnerable = True
+
+    def get_damage(self, player, attack_type):
+        if attack_type == 'weapon' and self.vulnerable:
+            self.health -= player.get_weapon_damage()
+        else:
+            pass
+        self.hit_time = pygame.time.get_ticks()
+        self.vulnerable = False
+
+    def check_death(self):
+        if self.health <= 0:
+            self.kill()
 
     def enemy_update(self,player): # this method allow me to get the player from level
         self.get_status(player)
         self.actions(player)
+        self.check_death()

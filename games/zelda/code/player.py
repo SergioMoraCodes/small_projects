@@ -47,6 +47,11 @@ class Player(Entity):
         self.magic_cost     = list(magic_data.values())[self.magic_index]['cost']
         self.magic_switch   = True
 
+        # timer
+        self.vulnerable   = True
+        self.hurt_time    = 0
+        self.invulnerable = 500
+
     def import_player_assets(self):
         folder_path     = '../graphics/player/'
 
@@ -153,6 +158,10 @@ class Player(Entity):
             if current_time - self.switch_time >= self.switch_cooldown:
                 self.magic_switch = True
 
+        if not self.vulnerable:
+            if current_time - self.hurt_time >= self.invulnerable:
+                self.vulnerable = True
+
     def get_weapon_damage(self):
         # base damage + weapon damage
         return self.stats['attack']+ weapon_data[self.weapon]['damage']
@@ -168,6 +177,13 @@ class Player(Entity):
         #set image
         self.image = animation[int(self.frame_index)] #changes the image looping the animation dict of surfaces
         self.rect = self.image.get_rect(center= self.hitbox.center) #we have to update the rectangle because every image is not the same size
+
+        # flicker
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
 
     def update(self):
         self.input()

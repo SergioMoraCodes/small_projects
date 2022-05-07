@@ -4,7 +4,7 @@ from entity import Entity
 from support import *
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites):
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player):
         super().__init__(groups)
 
         self.sprite_type = 'enemy'
@@ -35,6 +35,7 @@ class Enemy(Entity):
         self.can_attack      = True
         self.attack_cooldown = 400
         self.attack_time     = 0
+        self.damage_player   = damage_player
 
         # damage timer
         self.vulnerable    = True
@@ -74,14 +75,19 @@ class Enemy(Entity):
     def actions(self, player):
         if self.status == 'attack':
             self.attack_time = pygame.time.get_ticks()
-            print('attack')
+            self.damage_player(self.attack_damage, self.attack_type)
 
         elif self.status == 'move':
             self.direction = self.get_player_dist(player)[1]
         else:
             self.direction = pygame.math.Vector2()
 
+    def hit_reaction(self):
+        if not self.vulnerable:
+            self.direction *= -self.resistance
+
     def update(self):
+        self.hit_reaction()
         self.move(self.speed)
         self.animate()
         self.cooldowns()
@@ -98,6 +104,12 @@ class Enemy(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center= self.hitbox.center)
 
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
     def cooldowns(self):
         current_time = pygame.time.get_ticks() #* continuosly measure what time it's
         if not self.can_attack:
@@ -112,6 +124,7 @@ class Enemy(Entity):
 
     def get_damage(self, player, attack_type):
         if attack_type == 'weapon' and self.vulnerable:
+            self.direction = self.get_player_dist(player)[1]
             self.health -= player.get_weapon_damage()
         else:
             pass

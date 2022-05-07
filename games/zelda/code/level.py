@@ -5,7 +5,7 @@ from tile import Tile
 from player import Player
 from debug import debug
 from support import *
-from random import choice
+from random import choice, randint
 from weapon import Weapon
 from ui import UI
 from enemy import Enemy
@@ -32,7 +32,7 @@ class Level:
         self.ui = UI()
 
         # particles
-        # self.animation_player = AnimationPlayer()
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -71,7 +71,7 @@ class Level:
                                 else             : monster_name = 'squid'
                                 Enemy(monster_name,(x,y),
                                      [self.visible_sprites, self.attackable_sprites],
-                                      self.obstacle_sprites)
+                                      self.obstacle_sprites, self.damage_player)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites, self.attack_sprites])
@@ -84,6 +84,12 @@ class Level:
             self.current_attack.kill()
         self.current_attack = None
 
+    def damage_player(self, amount, attack_type):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+
     def player_attack_logic(self):
         if self.attack_sprites:
             for attack_sprite in self.attack_sprites:
@@ -91,8 +97,10 @@ class Level:
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == 'grass':
+                            pos = target_sprite.rect.center
+                            for leaf in range(randint(3,6)):
+                                self.animation_player.create_grass_particles(pos,[self.visible_sprites])
                             target_sprite.kill()
-                            # self.animation_player.create_grass_particles(pos,group)
                         else:
                             target_sprite.get_damage(self.player, attack_sprite.sprite_type)
 

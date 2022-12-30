@@ -2,7 +2,6 @@ import pygame
 from entity import Entity
 from settings import *
 from support import import_folder
-from entity import Entity
 class Player(Entity):
     def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
         super().__init__(groups)
@@ -24,8 +23,8 @@ class Player(Entity):
         self.obstacle_sprites = obstacle_sprites
 
         # stats
-        self.stats  = {'health':100, 'energy':60, 'attack':10, 'magic':4, 'speed':5} # max
-        self.health = self.stats['health'] # current
+        self.stats  = {'health': 100, 'energy' : 60, 'speed': 5, 'magic' : 4, 'attack': 10}
+        self.health = self.stats['health'] * 0.6 # current
         self.energy = self.stats['energy'] # we can have a difference between current and max
         self.speed  = self.stats['speed' ]
         self.exp    = 0
@@ -185,9 +184,16 @@ class Player(Entity):
         else:
             self.image.set_alpha(255)
 
+    def recover_energy(self):
+        if self.energy < self.stats['energy']:
+            self.energy += 0.005 * self.stats['magic']
+        else:
+            self.energy = self.stats['energy']
+
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.recover_energy()

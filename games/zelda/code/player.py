@@ -23,11 +23,13 @@ class Player(Entity):
         self.obstacle_sprites = obstacle_sprites
 
         # stats
-        self.stats  = {'health': 100, 'energy' : 60, 'speed': 5, 'magic' : 4, 'attack': 10}
+        self.stats         = {'health': 100, 'energy' : 60 , 'speed': 5  , 'magic' : 4  , 'attack': 10}
+        self.max_stats     = {'health': 300, 'energy' : 140, 'speed': 10 , 'magic' : 10 , 'attack': 20}
+        self.upgrade_cost  = {'health': 100, 'energy' : 100, 'speed': 100, 'magic' : 100, 'attack': 100}
         self.health = self.stats['health'] * 0.6 # current
         self.energy = self.stats['energy'] # we can have a difference between current and max
         self.speed  = self.stats['speed' ]
-        self.exp    = 0
+        self.exp    = 500
 
         # weapon
         self.create_attack   = create_attack   #? stores the function create attack
@@ -42,7 +44,7 @@ class Player(Entity):
         self.create_magic   = create_magic
         self.magic_index    = 0
         self.magic          = list(magic_data.keys())[self.magic_index]
-        self.magic_strength = list(magic_data.values())[self.magic_index]['strength'] + self.stats['magic']
+        self.magic_strength = list(magic_data.values())[self.magic_index]['strength']
         self.magic_cost     = list(magic_data.values())[self.magic_index]['cost']
         self.magic_switch   = True
 
@@ -164,6 +166,10 @@ class Player(Entity):
     def get_weapon_damage(self):
         # base damage + weapon damage
         return self.stats['attack']+ weapon_data[self.weapon]['damage']
+
+    def get_magic_damage(self):
+        # same as weapon
+        return self.stats['magic'] + self.magic_strength
 
     def animate(self):
         animation = self.animations[self.status]

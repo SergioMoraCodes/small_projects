@@ -11,11 +11,13 @@ from ui import UI
 from enemy import Enemy
 from particles import AnimationPlayer
 from magic import MagicPlayer
+from upgrade import Upgrade
 
 class Level:
     def __init__(self):
         # get the display surface already created in main
-        self.display_surface  = pygame.display.get_surface()
+        self.display_surface = pygame.display.get_surface()
+        self.game_paused     = False
 
         # sprite group setup
         self.visible_sprites  = Ysortcameragroup()
@@ -31,12 +33,14 @@ class Level:
 
         # user interface
         self.ui = UI()
+        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()
         self.magic_player     = MagicPlayer(self.animation_player)
 
     def create_map(self):
+        #creates obstacles, enemies and the player
         layouts = {
             'boundaries':import_csv_file('../map/map_FloorBlocks.csv'),
             'grass'     :import_csv_file('../map/map_Grass.csv'),
@@ -74,7 +78,7 @@ class Level:
                                 Enemy(monster_name,(x,y),
                                      [self.visible_sprites, self.attackable_sprites],
                                       self.obstacle_sprites, self.damage_player
-                                      , self.trigger_death)
+                                      , self.trigger_death, self.add_exp)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player,[self.visible_sprites, self.attack_sprites])
@@ -101,6 +105,9 @@ class Level:
     def trigger_death(self,particle_type, pos):
         self.animation_player.create_particles(particle_type,pos,[self.visible_sprites])
 
+    def add_exp(self, amount):
+        self.player.exp += amount
+
     def player_attack_logic(self):
         if self.attack_sprites:
             for attack_sprite in self.attack_sprites:
@@ -116,12 +123,23 @@ class Level:
                         else:
                             target_sprite.get_damage(self.player, attack_sprite.sprite_type)
 
-    def run(self): # update and draw the game
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
+
+    def run(self): # draws every element and updates them
+        #show always
         self.visible_sprites.custom_draw(self.player) # draw visible sprites
-        self.visible_sprites.update()                 # update the drawing
-        self.visible_sprites.enemy_update(self.player)
-        self.player_attack_logic()
         self.ui.display(self.player)                  # draws the player stats
+
+        if self.game_paused: #show the menu
+            self.upgrade.display()
+
+        else: #update the game
+            self.visible_sprites.update() # update the drawing
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
+
 class Ysortcameragroup(pygame.sprite.Group):
     def __init__(self):
 

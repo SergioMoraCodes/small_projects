@@ -17,6 +17,9 @@ class Game:
                 if event.type == pygame.QUIT: # checks if we are closing the game
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_m:
+                        self.level.toggle_menu ()
             self.screen.fill('black') # filling the screen with a black color
             self.level.run()
             pygame.display.update()   # updating the screen

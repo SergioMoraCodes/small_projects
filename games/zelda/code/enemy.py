@@ -4,7 +4,7 @@ from entity import Entity
 from support import *
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, death):
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, death, add_exp):
         super().__init__(groups)
 
         self.sprite_type = 'enemy'
@@ -37,6 +37,7 @@ class Enemy(Entity):
         self.attack_time     = 0
         self.damage_player   = damage_player
         self.trigger_death   = death
+        self.add_exp         = add_exp
 
         # damage timer
         self.vulnerable    = True
@@ -124,18 +125,21 @@ class Enemy(Entity):
                 self.vulnerable = True
 
     def get_damage(self, player, attack_type):
-        if attack_type == 'weapon' and self.vulnerable:
-            self.direction = self.get_player_dist(player)[1]
-            self.health -= player.get_weapon_damage()
-        else:
-            pass
-        self.hit_time = pygame.time.get_ticks()
-        self.vulnerable = False
+        if self.vulnerable:
+            if attack_type == 'weapon':
+                self.direction = self.get_player_dist(player)[1]
+                self.health -= player.get_weapon_damage()
+            else:
+                    self.health -= player.get_magic_damage()
+
+            self.hit_time = pygame.time.get_ticks()
+            self.vulnerable = False
 
     def check_death(self):
         if self.health <= 0:
             self.trigger_death(self.monster_name, self.rect.center)
             self.kill()
+            self.add_exp(self.exp)
 
     def enemy_update(self,player): # this method allow me to get the player from level
         self.get_status(player)

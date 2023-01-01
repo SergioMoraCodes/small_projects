@@ -7,7 +7,7 @@ class Player(Entity):
         super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft= pos) # gets rect to draw image
-        self.hitbox = self.rect.inflate(0,-26)  # offset rect to make collisions
+        self.hitbox = self.rect.inflate(-6,HITBOX_OFFSET['player'])  # offset rect to make collisions
 
         # graphic setup
         self.import_player_assets()
@@ -29,7 +29,7 @@ class Player(Entity):
         self.health = self.stats['health'] * 0.6 # current
         self.energy = self.stats['energy'] # we can have a difference between current and max
         self.speed  = self.stats['speed' ]
-        self.exp    = 500
+        self.exp    = 5000
 
         # weapon
         self.create_attack   = create_attack   #? stores the function create attack
@@ -52,6 +52,10 @@ class Player(Entity):
         self.vulnerable   = True
         self.hurt_time    = 0
         self.invulnerable = 500
+
+        # import sound
+        self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
+        self.weapon_attack_sound.set_volume(0.3)
 
     def import_player_assets(self):
         folder_path     = '../graphics/player/'
@@ -93,6 +97,7 @@ class Player(Entity):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks() #gets time once
                 self.create_attack() #calls create_attack method and creates Weapon() object
+                self.weapon_attack_sound.play()
             #magic input
             if keys[pygame.K_LCTRL]:
                 self.attacking      = True
@@ -201,5 +206,5 @@ class Player(Entity):
         self.cooldowns()
         self.get_status()
         self.animate()
-        self.move(self.speed)
+        self.move(self.stats['speed'])
         self.recover_energy()

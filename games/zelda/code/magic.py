@@ -5,6 +5,11 @@ from random import randint
 class MagicPlayer:
     def __init__(self, animation_player):
         self.animation_player = animation_player
+        self.sounds = {
+            'heal'  : pygame.mixer.Sound('../audio/heal.wav' ),
+            'flame' : pygame.mixer.Sound('../audio/fire.wav'),
+        }
+
 
     def heal(self, player, strengh, cost, groups):
         if player.energy >= cost:
@@ -14,7 +19,7 @@ class MagicPlayer:
                 player.health = player.stats['health']
             # self.animation_player.create_particles('aura',player.rect.center,groups)
             self.animation_player.create_particles('heal',player.rect.center,groups)
-
+            self.sounds['heal'].play()
     def flame(self,player, cost, groups):
         if player.energy >= cost:
             # player.energy -= cost
@@ -23,6 +28,7 @@ class MagicPlayer:
             elif player.status.split('_')[0] == 'left' : direction = pygame.math.Vector2(-1,0)
             elif player.status.split('_')[0] == 'up'   : direction = pygame.math.Vector2(0,-1)
             else : direction = pygame.math.Vector2(0,1)
+            self.sounds['flame'].play()
 
             for i in range(1,6): # we need it to start at 1 for the offset, multiply tile size
                 if direction.x: #horizontal 

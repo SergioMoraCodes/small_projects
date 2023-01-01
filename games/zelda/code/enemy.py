@@ -44,6 +44,14 @@ class Enemy(Entity):
         self.invincibility = 400
         self.hit_time      = 0
 
+        #sounds
+        self.death_sound  = pygame.mixer.Sound('../audio/death.wav')
+        self.hit_sound    = pygame.mixer.Sound('../audio/hit.wav'  )
+        self.attack_sound = pygame.mixer.Sound(monster_info['attack_sound'])
+        self.death_sound.set_volume(0.2)
+        self.hit_sound.set_volume(0.2)
+        self.attack_sound.set_volume(0.2)
+
     def import_graphics(self, name):
         self.animations = {'idle':[], 'move':[], 'attack':[]} # stores the surfaces in those folders
         main_path = f'../graphics/monsters/{name}/'
@@ -78,7 +86,7 @@ class Enemy(Entity):
         if self.status == 'attack':
             self.attack_time = pygame.time.get_ticks()
             self.damage_player(self.attack_damage, self.attack_type)
-
+            self.attack_sound.play()
         elif self.status == 'move':
             self.direction = self.get_player_dist(player)[1]
         else:
@@ -126,6 +134,7 @@ class Enemy(Entity):
 
     def get_damage(self, player, attack_type):
         if self.vulnerable:
+            self.hit_sound.play()
             if attack_type == 'weapon':
                 self.direction = self.get_player_dist(player)[1]
                 self.health -= player.get_weapon_damage()
@@ -140,6 +149,7 @@ class Enemy(Entity):
             self.trigger_death(self.monster_name, self.rect.center)
             self.kill()
             self.add_exp(self.exp)
+            self.death_sound.play()
 
     def enemy_update(self,player): # this method allow me to get the player from level
         self.get_status(player)

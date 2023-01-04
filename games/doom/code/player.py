@@ -47,6 +47,13 @@ class Player:
         self.angle %= math.tau # modulo division returns the remainder of the integer division
                                # in that way the angle never gets larger than tau (2*pi)
 
+    def draw(self):
+        pg.draw.line(self.game.screen, 'yellow', (self.x * TILE,self.y * TILE),(
+            (self.x * TILE + WIDTH * math.cos(self.angle)),
+            (self.y * TILE + WIDTH * math.sin(self.angle))
+        ), 2)
+        pg.draw.circle(self.game.screen, 'green', (self.x * TILE, self.y * TILE), 15)
+
     def update(self):
         self.movement()
 

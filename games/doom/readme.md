@@ -33,28 +33,28 @@ class Game:
     def __init__(self): #constructor which initialize pygame modules
         pg.init()
         self.screen = pg.display.set_mode(RES) # create the screen for rendering the set resolution
-        self.clock  = pg.time.Clock() # instance of the clock class for framerate
+        self.clock  = pg.time.Clock()          # instance of the clock class for framerate
         self.new_game()
 
-    def new_game(self):
-        pass # here we will create the map and the player
+    def new_game(self):                        # here we will create the map and the player
+        pass
 
-    def update(self):   # here we will update every entity in the game
+    def update(self):                          # here we will update every entity in the game
         pg.display.flip()
-        self.clock.tick(FPS)  # it sets the frame of rate
+        self.clock.tick(FPS)                   # sets the frame of rate
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
 
-    def draw(self):   # here wi will draw the map and every entity
+    def draw(self):                            # here we will draw the map and every entity
         self.screen.fill('black')
 
-    def check_events(self):  # checks to terminate the program
+    def check_events(self):                    # checks to terminate the program
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
 
-    def run(self):   # main loop of the game
-        while True:  # it consist of checking events, updating and drawing the entities
+    def run(self):                             # main loop of the game
+        while True:                            # it consist of checking events, updating and drawing the entities
             self.check_events()
             self.update()
             self.draw()

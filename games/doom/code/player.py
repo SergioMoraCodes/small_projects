@@ -34,8 +34,9 @@ class Player:
             dx -= speed_sin
             dy += speed_cos
 
-        self.x += dx # receiving the increments to the coordinates
-        self.y += dy
+        # self.x += dx # receiving the increments to the coordinates
+        # self.y += dy
+        self.check_collision(dx,dy)
 
         # rotation
         if keys[pg.K_LEFT]:
@@ -46,6 +47,16 @@ class Player:
 
         self.angle %= math.tau # modulo division returns the remainder of the integer division
                                # in that way the angle never gets larger than tau (2*pi)
+
+    def check_wall(self,x,y):  # checks if the coordinates are shared with the wall
+        return (x,y) not in self.game.map.world_map
+
+    def check_collision(self, dx, dy): # converting the delta into an integer and checking coordinates
+        if self.check_wall(int(self.x + dx), int(self.y)):
+            self.x += dx
+        if self.check_wall(int(self.x), int(self.y + dy)):
+            self.y += dy
+
 
     def draw(self):
         pg.draw.line(self.game.screen, 'yellow', (self.x * TILE,self.y * TILE),(
